@@ -161,10 +161,10 @@
 
         // Untuk menentukan harga Grosir harus diisi atau tidak
         function checkGrosir() {
-            const grosir = document.querySelector('input[name="grosir"]:checked').value;
+            const grosir = document.querySelector('input[name="grosir"]:checked');
             const hargaGrosir = document.getElementById('hargaGrosir');
 
-            if (grosir === 'ya') {
+            if (grosir && grosir.value === 'ya') {
                 hargaGrosir.disabled = false;
                 hargaGrosir.required = true;
             } else {
@@ -210,10 +210,10 @@
 
         // Untuk memvalidasi input user pada Captcha
         function validateUserCaptcha() {
-            let userInput = document.getElementById('userInput').value;
-            let captchaInput = document.getElementById('captcha-input').textContent;
+            let userInput = document.getElementById('userInput').value.trim();
+            let captchaInput = document.getElementById('captcha-input').textContent.trim();
 
-            document.getElementById('errCaptcha').innerHTML = "";
+            errCaptcha.textContent = "";
             if (userInput !== captchaInput) {
                 document.getElementById('errCaptcha').innerHTML = "Captcha yang dimasukkan salah!";
                 return false;
@@ -226,13 +226,18 @@
         function handleSubmit() {
             const isCaptchaValid = validateUserCaptcha();
             const isJasaKirimValid = checkJasaKirim();
+            const grosir = document.querySelector('input[name="grosir"]:checked');
+
+            if (!grosir) {
+                alert("Pilih opsi Grosir terlebih dahulu.");
+                return false;
+            }
 
             if (!isCaptchaValid || !isJasaKirimValid) {
                 return false;
-            } else {
-                return true;
             }
-            
+
+            return true;
         }
 
         // Untuk menampilkan captcha
@@ -311,7 +316,6 @@
 
         <input type="submit" value="Submit" onclick="return handleSubmit()">
         <input type="reset" value="Reset" onclick="resetMessageAndHargaGrosir()">
-    </form>
     </form>
 </body>
 </html>
